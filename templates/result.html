@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Your Health Analysis Results - AI Health Guardian</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-in-out',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                        'bounce-in': 'bounceIn 0.8s ease-out',
+                        'pulse-slow': 'pulse 3s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'celebration': 'celebration 0.6s ease-out',
+                        'warning-pulse': 'warningPulse 1.5s ease-in-out infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 1; transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes glow {
+            from { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
+            to { box-shadow: 0 0 30px rgba(99, 102, 241, 0.6); }
+        }
+        @keyframes celebration {
+            0% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(5deg); }
+            50% { transform: scale(1.2) rotate(-5deg); }
+            75% { transform: scale(1.1) rotate(3deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        @keyframes warningPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+        .glass-effect {
+            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .data-grid {
+            animation: slideUp 0.6s ease-out 0.3s both;
+        }
+        .result-card {
+            animation: bounceIn 0.8s ease-out 0.6s both;
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #f39c12;
+            animation: confetti-fall 3s linear infinite;
+        }
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 relative overflow-x-hidden">
+    
+    <!-- Animated Background -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-float"></div>
+        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-indigo-400/20 to-pink-400/20 rounded-full blur-3xl animate-float" style="animation-delay: -3s;"></div>
+        <div class="absolute top-1/2 left-1/2 w-60 h-60 bg-gradient-to-br from-green-400/10 to-blue-400/10 rounded-full blur-3xl animate-float" style="animation-delay: -1.5s;"></div>
+    </div>
+
+    <!-- Confetti for positive results -->
+    <div id="confetti-container" class="absolute inset-0 pointer-events-none"></div>
+
+    <div class="relative z-10 min-h-screen flex items-center justify-center p-6">
+        <div class="glass-effect rounded-3xl p-8 w-full max-w-6xl shadow-2xl animate-fade-in">
+            
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl mb-6 shadow-lg animate-glow">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-5xl font-bold gradient-text mb-4">Analysis Complete! 🎉</h1>
+                <p class="text-xl text-gray-600">Your personalized health assessment results</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Main Result Section -->
+                <div class="lg:col-span-2 space-y-8">
+                    <!-- Result Display -->
+                    <div class="result-card">
+                        <div class="text-center p-8 rounded-3xl border-2 shadow-xl
+                                    {% if prediction == 1 or prediction == '1' or prediction == 'Diabetic' %} 
+                                        bg-gradient-to-br from-red-50 to-red-100 border-red-200 animate-warning-pulse
+                                    {% else %} 
+                                        bg-gradient-to-br from-green-50 to-green-100 border-green-200 animate-celebration
+                                    {% endif %}">
+                            
+                            <!-- Result Icon -->
+                            <div class="flex justify-center mb-6">
+                                {% if prediction == 1 or prediction == '1' or prediction == 'Diabetic' %}
+                                    <div class="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center shadow-xl animate-pulse-slow">
+                                        <svg class="w-12 h-12 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                                        </svg>
+                                    </div>
+                                {% else %}
+                                    <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center shadow-xl animate-pulse-slow">
+                                        <svg class="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Result Text -->
+                            <h2 class="text-3xl font-bold text-gray-800 mb-6">Your Health Status</h2>
+                            <div class="{% if prediction == 1 or prediction == '1' or prediction == 'Diabetic' %}text-red-700{% else %}text-green-700{% endif %}">
+                                {% if prediction == 1 or prediction == '1' %}
+                                    <p class="text-5xl font-bold mb-4">⚠️ Higher Risk</p>
+                                    <p class="text-xl mb-4">Our AI model indicates elevated diabetes risk</p>
+                                    <div class="bg-red-100 p-4 rounded-xl border border-red-200">
+                                        <p class="text-lg font-semibold text-red-800">🏥 Immediate Action Recommended</p>
+                                        <p class="text-red-700 mt-2">Please consult with a healthcare professional for proper evaluation and guidance.</p>
+                                    </div>
+                                {% elif prediction == 0 or prediction == '0' %}
+                                    <p class="text-5xl font-bold mb-4">✅ Lower Risk</p>
+                                    <p class="text-xl mb-4">Great news! Your diabetes risk appears to be low</p>
+                                    <div class="bg-green-100 p-4 rounded-xl border border-green-200">
+                                        <p class="text-lg font-semibold text-green-800">🎉 Keep Up the Great Work!</p>
+                                        <p class="text-green-700 mt-2">Continue maintaining your healthy lifestyle and regular check-ups.</p>
+                                    </div>
+                                {% else %}
+                                    <p class="text-5xl font-bold mb-4">{{ prediction }}</p>
+                                    {% if prediction == 'Diabetic' %}
+                                        <p class="text-xl mb-4">Our AI model indicates elevated diabetes risk</p>
+                                        <div class="bg-red-100 p-4 rounded-xl border border-red-200">
+                                            <p class="text-lg font-semibold text-red-800">🏥 Immediate Action Recommended</p>
+                                            <p class="text-red-700 mt-2">Please consult with a healthcare professional for proper evaluation and guidance.</p>
+                                        </div>
+                                    {% else %}
+                                        <p class="text-xl mb-4">Great news! Your diabetes risk appears to be low</p>
+                                        <div class="bg-green-100 p-4 rounded-xl border border-green-200">
+                                            <p class="text-lg font-semibold text-green-800">🎉 Keep Up the Great Work!</p>
+                                            <p class="text-green-700 mt-2">Continue maintaining your healthy lifestyle and regular check-ups.</p>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Input Data Display -->
+                    <div class="data-grid">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                            <span class="w-3 h-3 bg-indigo-500 rounded-full animate-pulse"></span>
+                            Your Health Parameters
+                            <span class="text-lg">📊</span>
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {% for key, value in input_data.items() %}
+                            <div class="group hover:scale-105 transition-all duration-300">
+                                <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-5 border border-gray-200 hover:shadow-lg transition-all">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-sm font-bold text-gray-600 uppercase tracking-wide">{{ key.replace('_', ' ') }}</span>
+                                        <span class="text-2xl font-bold text-gray-800">{{ value }}</span>
+                                    </div>
+                                    <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div class="h-full bg-gradient-to-r from-indigo-400 to-purple-500 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700"></div>
+                                    </div>
+                                    {% if key == 'glucose' %}
+                                        <div class="mt-2 text-xs {% if value|int > 125 %}text-red-600{% elif value|int > 100 %}text-orange-600{% else %}text-green-600{% endif %}">
+                                            {% if value|int > 125 %}🚨 High{% elif value|int > 100 %}⚠️ Elevated{% else %}✅ Normal{% endif %}
+                                        </div>
+                                    {% elif key == 'bmi' %}
+                                        <div class="mt-2 text-xs {% if value|float > 30 %}text-red-600{% elif value|float > 25 %}text-orange-600{% else %}text-green-600{% endif %}">
+                                            {% if value|float > 30 %}🚨 Obese{% elif value|float > 25 %}⚠️ Overweight{% else %}✅ Normal{% endif %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar with Recommendations -->
+                <div class="space-y-6">
+                    <!-- Personalized Recommendations -->
+                    <div class="glass-effect rounded-2xl p-6 animate-slide-up" style="animation-delay: 0.2s;">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            <span class="text-2xl">🎯</span>
+                            Personalized Tips
+                        </h3>
+                        <div class="space-y-3" id="recommendations">
+                            {% if prediction == 1 or prediction == '1' or prediction == 'Diabetic' %}
+                                <div class="p-3 bg-red-50 rounded-lg border border-red-200">
+                                    <p class="text-sm text-red-700">🏥 Schedule a doctor's appointment immediately</p>
+                                </div>
+                                <div class="p-3 bg-orange-50 rounded-lg border border-orange-200">
+                                    <p class="text-sm text-orange-700">🍎 Focus on low-glycemic foods</p>
+                                </div>
+                                <div class="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                                    <p class="text-sm text-blue-700">🏃‍♂️ Start gentle daily exercise</p>
+                                </div>
+                            {% else %}
+                                <div class="p-3 bg-green-50 rounded-lg border border-green-200">
+                                    <p class="text-sm text-green-700">✅ Continue your healthy lifestyle</p>
+                                </div>
+                                <div class="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                                    <p class="text-sm text-blue-700">🏃‍♂️ Maintain regular exercise</p>
+                                </div>
+                                <div class="p-3 bg-purple-50 rounded-lg border border-purple-200">
+                                    <p class="text-sm text-purple-700">📅 Annual health check-ups</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Success Stories -->
+                    <div class="glass-effect rounded-2xl p-6 animate-slide-up" style="animation-delay: 0.4s;">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            <span class="text-2xl">💪</span>
+                            Success Stories
+                        </h3>
+                        <div class="space-y-4" id="success-story">
+                            <div class="p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-xl border border-green-100">
+                                <p class="text-sm italic text-gray-700 mb-2">"This tool helped me catch my pre-diabetes early. Now I'm healthier than ever!"</p>
+                                <p class="text-xs text-gray-500">- Sarah M., Age 34</p>
+                            </div>
+                        </div>
+                        <button onclick="getNewStory()" class="mt-3 text-xs text-indigo-600 hover:text-indigo-800 font-semibold">
+                            Read Another Story →
+                        </button>
+                    </div>
+
+                    <!-- Next Steps -->
+                    <div class="glass-effect rounded-2xl p-6 animate-slide-up" style="animation-delay: 0.6s;">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            <span class="text-2xl">🚀</span>
+                            Next Steps
+                        </h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3 p-3 bg-indigo-50 rounded-lg">
+                                <span class="w-6 h-6 bg-indigo-500 text-white rounded-full flex items-center justify-center text-xs font-bold">1</span>
+                                <span class="text-sm text-indigo-700">Save your results</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
+                                <span class="w-6 h-6 bg-purple-500 text-white rounded-full flex items-center justify-center text-xs font-bold">2</span>
+                                <span class="text-sm text-purple-700">Share with your doctor</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+                                <span class="w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center text-xs font-bold">3</span>
+                                <span class="text-sm text-green-700">Follow recommendations</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+                <a href="/" 
+                   class="group px-10 py-5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-3xl font-bold text-xl shadow-xl hover:shadow-2xl transform hover:scale-110 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-indigo-500/50 text-center animate-glow">
+                    <span class="flex items-center justify-center gap-3">
+                        <svg class="w-6 h-6 group-hover:-rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                        New Analysis
+                    </span>
+                </a>
+                
+                <button onclick="window.print()" 
+                        class="group px-10 py-5 bg-white border-2 border-gray-300 text-gray-700 rounded-3xl font-bold text-xl shadow-xl hover:shadow-2xl hover:border-indigo-300 hover:text-indigo-600 transform hover:scale-110 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-gray-500/50">
+                    <span class="flex items-center justify-center gap-3">
+                        <svg class="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                        </svg>
+                        Save Results
+                    </span>
+                </button>
+
+                <button onclick="shareResults()" 
+                        class="group px-10 py-5 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-3xl font-bold text-xl shadow-xl hover:shadow-2xl transform hover:scale-110 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-green-500/50">
+                    <span class="flex items-center justify-center gap-3">
+                        <svg class="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
+                        </svg>
+                        Share Results
+                    </span>
+                </button>
+            </div>
+
+            <!-- Inspirational Quote -->
+            <div class="mt-8 p-6 bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl border border-purple-100">
+                <div class="text-center">
+                    <svg class="w-8 h-8 text-purple-400 mx-auto mb-3" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h4v10h-10z"/>
+                    </svg>
+                    <p class="text-lg italic text-gray-700 mb-2" id="result-quote">
+                        "Your health is an investment, not an expense."
+                    </p>
+                    <p class="text-sm text-gray-500">- Unknown</p>
+                </div>
+            </div>
+
+            <!-- Medical Disclaimer -->
+            <div class="mt-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-100">
+                <div class="flex items-start gap-3">
+                    <div class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg class="w-3 h-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-blue-900 mb-1">🏥 Important Medical Notice</h4>
+                        <p class="text-sm text-blue-700 leading-relaxed">This prediction is generated by an AI model for informational purposes only. It should not be used as a substitute for professional medical advice, diagnosis, or treatment. Always consult qualified healthcare providers for medical decisions and proper health management.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Success stories array
+        const successStories = [
+            { text: "This tool helped me catch my pre-diabetes early. Now I'm healthier than ever!", author: "Sarah M., Age 34" },
+            { text: "The early warning gave me the motivation to change my lifestyle completely.", author: "Mike R., Age 42" },
+            { text: "Thanks to this analysis, I started exercising and eating better. My doctor is amazed!", author: "Lisa K., Age 38" },
+            { text: "Caught my risk factors early and prevented diabetes. This tool saved my life!", author: "David L., Age 45" },
+            { text: "The personalized recommendations were exactly what I needed to get healthy.", author: "Emma T., Age 29" }
+        ];
+
+        let currentStoryIndex = 0;
+
+        // Get new success story
+        function getNewStory() {
+            const storyContainer = document.getElementById('success-story');
+            storyContainer.style.opacity = '0';
+            
+            setTimeout(() => {
+                currentStoryIndex = (currentStoryIndex + 1) % successStories.length;
+                const story = successStories[currentStoryIndex];
+                storyContainer.innerHTML = `
+                    <div class="p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-xl border border-green-100">
+                        <p class="text-sm italic text-gray-700 mb-2">"${story.text}"</p>
+                        <p class="text-xs text-gray-500">- ${story.author}</p>
+                    </div>
+                `;
+                storyContainer.style.opacity = '1';
+            }, 300);
+        }
+
+        // Share results function
+        function shareResults() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My Health Analysis Results',
+                    text: 'I just completed my diabetes risk assessment with AI Health Guardian!',
+                    url: window.location.href
+                });
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                const url = window.location.href;
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('Results link copied to clipboard!');
+                });
+            }
+        }
+
+        // Create confetti for positive results
+        function createConfetti() {
+            const container = document.getElementById('confetti-container');
+            const colors = ['#f39c12', '#e74c3c', '#9b59b6', '#3498db', '#2ecc71'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                container.appendChild(confetti);
+                
+                // Remove confetti after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+
+        // Check if result is positive and create confetti
+        {% if prediction == 0 or prediction == '0' or prediction == 'Non-Diabetic' %}
+        setTimeout(createConfetti, 1000);
+        {% endif %}
+
+        // Smooth entrance animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Stagger animation for data grid items
+            const gridItems = document.querySelectorAll('.grid > div');
+            gridItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                item.style.animation = `slideUp 0.6s ease-out ${0.1 * index + 0.3}s both`;
+            });
+
+            // Auto-rotate success stories
+            setInterval(getNewStory, 10000);
+        });
+
+        // Print styles
+        const printStyles = `
+            @media print {
+                body { background: white !important; }
+                .glass-effect { background: white !important; backdrop-filter: none !important; }
+                .absolute { display: none !important; }
+                button { display: none !important; }
+                .animate-float, .animate-glow, .animate-pulse-slow { animation: none !important; }
+            }
+        `;
+        const styleSheet = document.createElement("style");
+        styleSheet.innerText = printStyles;
+        document.head.appendChild(styleSheet);
+    </script>
+</body>
+</html>

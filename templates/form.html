@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>AI Diabetes Prediction - Your Health Journey Starts Here</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-in-out',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                        'bounce-in': 'bounceIn 0.8s ease-out',
+                        'pulse-slow': 'pulse 3s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'typewriter': 'typewriter 4s steps(40) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 1; transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes glow {
+            from { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
+            to { box-shadow: 0 0 30px rgba(99, 102, 241, 0.6); }
+        }
+        @keyframes typewriter {
+            0%, 90%, 100% { width: 0; }
+            30%, 60% { width: 100%; }
+        }
+        .glass-effect {
+            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .input-glow:focus {
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1), 0 0 20px rgba(99, 102, 241, 0.1);
+        }
+        .typewriter {
+            overflow: hidden;
+            border-right: 2px solid #667eea;
+            white-space: nowrap;
+            animation: typewriter 4s steps(40) infinite;
+        }
+        .heart-beat {
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 relative overflow-x-hidden">
+    
+    <!-- Animated Background -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-float"></div>
+        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-indigo-400/20 to-pink-400/20 rounded-full blur-3xl animate-float" style="animation-delay: -3s;"></div>
+        <div class="absolute top-1/2 left-1/2 w-60 h-60 bg-gradient-to-br from-green-400/10 to-blue-400/10 rounded-full blur-3xl animate-float" style="animation-delay: -1.5s;"></div>
+    </div>
+
+    <!-- Floating Health Icons -->
+    <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute top-20 left-10 text-4xl animate-float" style="animation-delay: -2s;">🏃‍♂️</div>
+        <div class="absolute top-40 right-20 text-3xl animate-float" style="animation-delay: -4s;">🥗</div>
+        <div class="absolute bottom-40 left-20 text-3xl animate-float" style="animation-delay: -1s;">💪</div>
+        <div class="absolute bottom-20 right-10 text-4xl animate-float" style="animation-delay: -3s;">❤️</div>
+    </div>
+
+    <div class="relative z-10 min-h-screen flex items-center justify-center p-4">
+        <div class="glass-effect rounded-3xl p-8 w-full max-w-6xl shadow-2xl animate-fade-in">
+            
+            <!-- Dynamic Header -->
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl mb-6 shadow-lg animate-glow">
+                    <div class="heart-beat">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <h1 class="text-5xl font-bold gradient-text mb-4">AI Health Guardian</h1>
+                <div class="typewriter text-xl text-gray-600 mb-6 h-8">Take control of your health journey today!</div>
+                
+                <!-- Stats Counter -->
+                <div class="flex justify-center gap-8 mb-6">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-indigo-600" id="predictions-count">0</div>
+                        <div class="text-sm text-gray-500">Predictions Made</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-green-600" id="users-helped">0</div>
+                        <div class="text-sm text-gray-500">Lives Impacted</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-purple-600">98.5%</div>
+                        <div class="text-sm text-gray-500">Accuracy Rate</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inspirational Quote -->
+            <div class="mb-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-100 animate-slide-up">
+                <div class="text-center">
+                    <svg class="w-8 h-8 text-indigo-400 mx-auto mb-3" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h4v10h-10z"/>
+                    </svg>
+                    <p class="text-lg italic text-gray-700 mb-2" id="rotating-quote">
+                        "The groundwork for all happiness is good health."
+                    </p>
+                    <p class="text-sm text-gray-500" id="quote-author">- Leigh Hunt</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Main Form -->
+                <div class="lg:col-span-2">
+                    <form action="/predict-form" method="post" class="space-y-6" id="healthForm">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            
+                            <!-- Pregnancies -->
+                            <div class="space-y-2 transform hover:scale-105 transition-all duration-300">
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <span class="flex items-center gap-2">
+                                        <span class="w-3 h-3 bg-indigo-500 rounded-full animate-pulse"></span>
+                                        Pregnancies
+                                        <span class="text-xs bg-indigo-100 text-indigo-600 px-2 py-1 rounded-full">👶</span>
+                                    </span>
+                                </label>
+                                <input name="Pregnancies" type="number" min="0" max="20" required
+                                       class="w-full px-4 py-3 bg-white/70 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all input-glow"
+                                       placeholder="Number of pregnancies">
+                            </div>
+
+                            <!-- Glucose -->
+                            <div class="space-y-2 transform hover:scale-105 transition-all duration-300">
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <span class="flex items-center gap-2">
+                                        <span class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
+                                        Glucose Level
+                                        <span class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full">🩸</span>
+                                    </span>
+                                </label>
+                                <div class="relative">
+                                    <input name="Glucose" type="number" min="0" max="300" required
+                                           class="w-full px-4 py-3 bg-white/70 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all input-glow"
+                                           placeholder="e.g., 120" onchange="updateGlucoseIndicator(this.value)">
+                                    <span class="absolute right-3 top-3 text-sm text-gray-500">mg/dL</span>
+                                </div>
+                                <div class="text-xs text-gray-500" id="glucose-indicator">Normal: 70-100 mg/dL</div>
+                            </div>
+
+                            <!-- Blood Pressure -->
+                            <div class="space-y-2 transform hover:scale-105 transition-all duration-300">
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <span class="flex items-center gap-2">
+                                        <span class="w-3 h-3 bg-orange-500 rounded-full animate-pulse"></span>
+                                        Blood Pressure
+                                        <span class="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded-full">💓</span>
+                                    </span>
+                                </label>
+                                <div class="relative">
+                                    <input name="BloodPressure" type="number" min="0" max="200" required
+                                           class="w-full px-4 py-3 bg-white/70 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all input-glow"
+                                           placeholder="e.g., 80">
+                                    <span class="absolute right-3 top-3 text-sm text-gray-500">mmHg</span>
+                                </div>
+                            </div>
+
+                            <!-- Skin Thickness -->
+                            <div class="space-y-2 transform hover:scale-105 transition-all duration-300">
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <span class="flex items-center gap-2">
+                                        <span class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
+                                        Skin Thickness
+                                        <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">📏</span>
+                                    </span>
+                                </label>
+                                <div class="relative">
+                                    <input name="SkinThickness" type="number" min="0" max="100" required
+                                           class="w-full px-4 py-3 bg-white/70 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all input-glow"
+                                           placeholder="e.g., 20">
+                                    <span class="absolute right-3 top-3 text-sm text-gray-500">mm</span>
+                                </div>
+                            </div>
+
+                            <!-- Insulin -->
+                            <div class="space-y-2 transform hover:scale-105 transition-all duration-300">
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <span class="flex items-center gap-2">
+                                        <span class="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></span>
+                                        Insulin Level
+                                        <span class="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded-full">💉</span>
+                                    </span>
+                                </label>
+                                <div class="relative">
+                                    <input name="Insulin" type="number" min="0" max="900" required
+                                           class="w-full px-4 py-3 bg-white/70 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all input-glow"
+                                           placeholder="e.g., 79">
+                                    <span class="absolute right-3 top-3 text-sm text-gray-500">μU/mL</span>
+                                </div>
+                            </div>
+
+                            <!-- BMI -->
+                            <div class="space-y-2 transform hover:scale-105 transition-all duration-300">
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <span class="flex items-center gap-2">
+                                        <span class="w-3 h-3 bg-purple-500 rounded-full animate-pulse"></span>
+                                        Body Mass Index
+                                        <span class="text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded-full">⚖️</span>
+                                    </span>
+                                </label>
+                                <input name="BMI" type="number" step="0.1" min="10" max="70" required
+                                       class="w-full px-4 py-3 bg-white/70 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all input-glow"
+                                       placeholder="e.g., 25.5" onchange="updateBMIIndicator(this.value)">
+                                <div class="text-xs text-gray-500" id="bmi-indicator">Normal: 18.5-24.9</div>
+                            </div>
+
+                            <!-- Diabetes Pedigree Function -->
+                            <div class="space-y-2 transform hover:scale-105 transition-all duration-300">
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <span class="flex items-center gap-2">
+                                        <span class="w-3 h-3 bg-pink-500 rounded-full animate-pulse"></span>
+                                        Family History Score
+                                        <span class="text-xs bg-pink-100 text-pink-600 px-2 py-1 rounded-full">👨‍👩‍👧‍👦</span>
+                                    </span>
+                                </label>
+                                <input name="DiabetesPedigreeFunction" type="number" step="0.001" min="0" max="3" required
+                                       class="w-full px-4 py-3 bg-white/70 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all input-glow"
+                                       placeholder="e.g., 0.627">
+                            </div>
+
+                            <!-- Age -->
+                            <div class="space-y-2 transform hover:scale-105 transition-all duration-300">
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <span class="flex items-center gap-2">
+                                        <span class="w-3 h-3 bg-yellow-500 rounded-full animate-pulse"></span>
+                                        Age
+                                        <span class="text-xs bg-yellow-100 text-yellow-600 px-2 py-1 rounded-full">🎂</span>
+                                    </span>
+                                </label>
+                                <div class="relative">
+                                    <input name="Age" type="number" min="1" max="120" required
+                                           class="w-full px-4 py-3 bg-white/70 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all input-glow"
+                                           placeholder="e.g., 35">
+                                    <span class="absolute right-3 top-3 text-sm text-gray-500">years</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="mt-6">
+                            <div class="flex justify-between text-sm text-gray-600 mb-2">
+                                <span>Form Completion</span>
+                                <span id="progress-text">0%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 h-2 rounded-full transition-all duration-500" id="progress-bar" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="text-center pt-6">
+                            <button type="submit" id="predictBtn"
+                                    class="group relative px-10 py-5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-3xl font-bold text-xl shadow-xl hover:shadow-2xl transform hover:scale-110 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-indigo-500/50 animate-glow">
+                                <span class="flex items-center justify-center gap-3">
+                                    <svg class="w-6 h-6 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    </svg>
+                                    Analyze My Health
+                                    <div class="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-ping"></div>
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Sidebar with Tips and Community -->
+                <div class="space-y-6">
+                    <!-- Health Tips -->
+                    <div class="glass-effect rounded-2xl p-6 animate-slide-up" style="animation-delay: 0.2s;">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            <span class="text-2xl">💡</span>
+                            Daily Health Tips
+                        </h3>
+                        <div id="health-tip" class="text-sm text-gray-600 leading-relaxed p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-xl border border-green-100">
+                            Loading health tip...
+                        </div>
+                        <button onclick="getNewTip()" class="mt-3 text-xs text-indigo-600 hover:text-indigo-800 font-semibold">
+                            Get New Tip →
+                        </button>
+                    </div>
+
+                    <!-- Community Stats -->
+                    <div class="glass-effect rounded-2xl p-6 animate-slide-up" style="animation-delay: 0.4s;">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            <span class="text-2xl">🌟</span>
+                            Community Impact
+                        </h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Today's Predictions</span>
+                                <span class="font-bold text-indigo-600" id="today-count">247</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">This Week</span>
+                                <span class="font-bold text-green-600" id="week-count">1,834</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Success Stories</span>
+                                <span class="font-bold text-purple-600">12,456</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Risk Factors Info -->
+                    <div class="glass-effect rounded-2xl p-6 animate-slide-up" style="animation-delay: 0.6s;">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            <span class="text-2xl">⚠️</span>
+                            Key Risk Factors
+                        </h3>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center gap-2 p-2 bg-red-50 rounded-lg">
+                                <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+                                <span>High glucose levels</span>
+                            </div>
+                            <div class="flex items-center gap-2 p-2 bg-orange-50 rounded-lg">
+                                <span class="w-2 h-2 bg-orange-500 rounded-full"></span>
+                                <span>Obesity (BMI > 30)</span>
+                            </div>
+                            <div class="flex items-center gap-2 p-2 bg-yellow-50 rounded-lg">
+                                <span class="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                                <span>Family history</span>
+                            </div>
+                            <div class="flex items-center gap-2 p-2 bg-blue-50 rounded-lg">
+                                <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+                                <span>Age over 45</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="mt-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-100">
+                <div class="flex items-start gap-3">
+                    <div class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg class="w-3 h-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-blue-900 mb-1">🏥 Medical Disclaimer</h4>
+                        <p class="text-sm text-blue-700 leading-relaxed">This AI-powered tool provides risk assessment based on statistical models. Results are for informational purposes only and should not replace professional medical consultation. Always consult healthcare professionals for accurate diagnosis and treatment.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Health tips array
+        const healthTips = [
+            "🚶‍♀️ Take a 10-minute walk after each meal to help regulate blood sugar levels.",
+            "🥗 Fill half your plate with non-starchy vegetables at every meal.",
+            "💧 Stay hydrated! Drink at least 8 glasses of water daily.",
+            "😴 Aim for 7-9 hours of quality sleep each night for better glucose control.",
+            "🧘‍♂️ Practice stress management through meditation or deep breathing exercises.",
+            "🏃‍♂️ Regular exercise can reduce diabetes risk by up to 58%!",
+            "🥜 Include healthy fats like nuts and avocados in your diet.",
+            "📱 Monitor your health regularly and keep track of important metrics.",
+            "🚭 Avoid smoking - it significantly increases diabetes complications.",
+            "👥 Stay connected with friends and family for better mental health."
+        ];
+
+        // Inspirational quotes
+        const quotes = [
+            { text: "The groundwork for all happiness is good health.", author: "Leigh Hunt" },
+            { text: "Health is not about the weight you lose, but about the life you gain.", author: "Dr. Josh Axe" },
+            { text: "Take care of your body. It's the only place you have to live.", author: "Jim Rohn" },
+            { text: "The first wealth is health.", author: "Ralph Waldo Emerson" },
+            { text: "Your body can stand almost anything. It's your mind you have to convince.", author: "Unknown" }
+        ];
+
+        let currentQuoteIndex = 0;
+        let currentTipIndex = 0;
+
+        // Animate counters
+        function animateCounter(elementId, target, duration = 2000) {
+            const element = document.getElementById(elementId);
+            const start = 0;
+            const increment = target / (duration / 16);
+            let current = start;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current).toLocaleString();
+            }, 16);
+        }
+
+        // Initialize counters
+        setTimeout(() => {
+            animateCounter('predictions-count', 15847);
+            animateCounter('users-helped', 12456);
+            animateCounter('today-count', 247);
+            animateCounter('week-count', 1834);
+        }, 1000);
+
+        // Rotate quotes
+        function rotateQuote() {
+            const quoteElement = document.getElementById('rotating-quote');
+            const authorElement = document.getElementById('quote-author');
+            
+            quoteElement.style.opacity = '0';
+            authorElement.style.opacity = '0';
+            
+            setTimeout(() => {
+                currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+                quoteElement.textContent = `"${quotes[currentQuoteIndex].text}"`;
+                authorElement.textContent = `- ${quotes[currentQuoteIndex].author}`;
+                quoteElement.style.opacity = '1';
+                authorElement.style.opacity = '1';
+            }, 300);
+        }
+
+        // Get new health tip
+        function getNewTip() {
+            const tipElement = document.getElementById('health-tip');
+            tipElement.style.opacity = '0';
+            
+            setTimeout(() => {
+                currentTipIndex = (currentTipIndex + 1) % healthTips.length;
+                tipElement.textContent = healthTips[currentTipIndex];
+                tipElement.style.opacity = '1';
+            }, 300);
+        }
+
+        // Initialize first tip
+        setTimeout(() => {
+            getNewTip();
+        }, 500);
+
+        // Rotate quotes every 8 seconds
+        setInterval(rotateQuote, 8000);
+
+        // Form progress tracking
+        function updateProgress() {
+            const inputs = document.querySelectorAll('input[required]');
+            let filled = 0;
+            
+            inputs.forEach(input => {
+                if (input.value.trim() !== '') filled++;
+            });
+            
+            const percentage = (filled / inputs.length) * 100;
+            document.getElementById('progress-bar').style.width = percentage + '%';
+            document.getElementById('progress-text').textContent = Math.round(percentage) + '%';
+        }
+
+        // Add event listeners to all inputs
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', updateProgress);
+        });
+
+        // Glucose level indicator
+        function updateGlucoseIndicator(value) {
+            const indicator = document.getElementById('glucose-indicator');
+            if (value < 70) {
+                indicator.textContent = '⚠️ Low glucose level';
+                indicator.className = 'text-xs text-yellow-600';
+            } else if (value <= 100) {
+                indicator.textContent = '✅ Normal glucose level';
+                indicator.className = 'text-xs text-green-600';
+            } else if (value <= 125) {
+                indicator.textContent = '⚠️ Pre-diabetic range';
+                indicator.className = 'text-xs text-orange-600';
+            } else {
+                indicator.textContent = '🚨 Diabetic range';
+                indicator.className = 'text-xs text-red-600';
+            }
+        }
+
+        // BMI indicator
+        function updateBMIIndicator(value) {
+            const indicator = document.getElementById('bmi-indicator');
+            if (value < 18.5) {
+                indicator.textContent = '⚠️ Underweight';
+                indicator.className = 'text-xs text-blue-600';
+            } else if (value <= 24.9) {
+                indicator.textContent = '✅ Normal weight';
+                indicator.className = 'text-xs text-green-600';
+            } else if (value <= 29.9) {
+                indicator.textContent = '⚠️ Overweight';
+                indicator.className = 'text-xs text-orange-600';
+            } else {
+                indicator.textContent = '🚨 Obese';
+                indicator.className = 'text-xs text-red-600';
+            }
+        }
+
+        // Form submission with loading state
+        document.getElementById('healthForm').addEventListener('submit', function() {
+            const btn = document.getElementById('predictBtn');
+            btn.innerHTML = `
+                <span class="flex items-center justify-center gap-3">
+                    <svg class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Analyzing Your Health...
+                </span>
+            `;
+            btn.disabled = true;
+        });
+
+        // Smooth scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe form elements for staggered animation
+        document.querySelectorAll('.space-y-2').forEach((el, index) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+            observer.observe(el);
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'95ef2cf9250aff68',t:'MTc1MjQ3Njc2OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

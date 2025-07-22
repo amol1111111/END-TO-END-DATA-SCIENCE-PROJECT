@@ -78,15 +78,5 @@ This AI health prediction tool can be effectively used in health camps, clinics,
 
 This project successfully integrates machine learning with web development to deliver a health-focused, user-friendly application. The combination of accurate predictions, dynamic interface, and user education makes it a valuable tool for health awareness and screening. Its modular structure allows for easy expansion into mobile apps, multilingual platforms, or integration with wearable health devices in the future.
 
-
-
-
-
-
-
-
-
-
-
 # Output
-https://github.com/user-attachments/assets/26f368df-c826-4ee8-b52d-1853c60a8771
+https://github.com/user-attachments/assets/7444614d-c7f9-4094-8ce2-2634dfd6bede

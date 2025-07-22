@@ -8,16 +8,16 @@ from app.model import load_model
 
 app = FastAPI()
 
-# ✅ Load model
+# Load model
 model = load_model()
 
-# ✅ Template folder is outside 'app' → use root-level templates
+# Template folder is outside 'app' → use root-level templates
 templates = Jinja2Templates(directory="templates")
 
-# ✅ Temporary global store for form data
+# Temporary global store for form data
 last_prediction = {}
 
-# 🔹 Home route → form page
+# Home route → form page
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request):
     fields = [
@@ -29,7 +29,7 @@ def home(request: Request):
         "fields": fields
     })
 
-# 🔹 Handle form submission
+# Handle form submission
 @app.post("/predict-form", response_class=HTMLResponse)
 async def predict_form(
     request: Request,
@@ -53,11 +53,11 @@ async def predict_form(
         "Age": Age
     }
 
-    # 🔹 Predict
+    # Predict
     prediction = model.predict([[*input_data.values()]])[0]
     result = 1 if prediction == 1 else 0
 
-    # 🔹 Add current Indian datetime
+    # Add current Indian datetime
     india_time = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
     record = input_data.copy()
     record["Prediction"] = result
@@ -70,7 +70,7 @@ async def predict_form(
     else:
         df.to_csv(file_path, mode='w', header=True, index=False)
 
-    # 🔹 Store temporarily
+    # Store temporarily
     global last_prediction
     last_prediction = {
         "input_data": input_data,
@@ -79,7 +79,7 @@ async def predict_form(
 
     return RedirectResponse("/result", status_code=303)
 
-# 🔹 Show result page
+# Show result page
 @app.get("/result", response_class=HTMLResponse)
 def show_result(request: Request):
     return templates.TemplateResponse("result.html", {

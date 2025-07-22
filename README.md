@@ -80,3 +80,4 @@ This project successfully integrates machine learning with web development to de
 
 # Output
 https://github.com/user-attachments/assets/7444614d-c7f9-4094-8ce2-2634dfd6bede
+https://github.com/user-attachments/assets/a352bd5b-6e73-401b-b75f-6dd34bb01105
